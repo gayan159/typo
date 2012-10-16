@@ -16,9 +16,22 @@ Feature: Merge Articles
     Then I should see "Merge Articles"
 
   Scenario: A non-admin cannot merge articles. 
-    Given I am on the home page
-    When I follow "Hello World!"
-    Then I should not see "Merge With Article"
+    Given I am logged into the admin panel
+    And I follow "Users"
+    And I press "New User"
+    And I fill in "user_login" with "Joe"
+    And I fill in "user_password" with "password"
+    Then show me the page
+    And I fill in "Password confirmation" with "password"
+    Then show me the page
+    And I fill in "user_email" with "email@email.com"
+    And I select "Blog Publisher" from "user[profile_id]"
+    And I fill in "user_firstname" with "Joe"
+    And I fill in "user_lastname" with "McKenney"
+    And I fill in "user_nickname" with "Joe"
+    And I press "Save"
+    And I follow "Log out"    
+
 
   Scenario: When articles are merged, the merged article should contain the text of both previous articles.
     Given I am logged into the admin panel 
