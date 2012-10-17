@@ -103,7 +103,21 @@ class Article < Content
         false
       end
       merged_body = first.body + second.body
-      final = Article.create(:title => first.title, :author => first.author, :body => merged_body, :published => true)
+      final = Article.create(:title => first.title, :author => first.author, :body => merged_body, :user_id => first.user_id, :published => true, :allow_comments => true)
+      comments1 = Feedback.find_all_by_article_id(first_id)
+      if not comments1.blank?
+        comments1.each do |feedback|
+          feedback.article_id = final.id
+          feedback.save
+        end
+      end
+      comments2 = Feedback.find_all_by_article_id(second_id)
+      if not comments2.blank?
+        comments2.each do |feedback|
+          feedback.article_id = final.id
+          feedback.save
+        end
+      end
       Article.destroy(first_id)
       Article.destroy(second_id)
       final
